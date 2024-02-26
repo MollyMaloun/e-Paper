@@ -8,7 +8,7 @@ if os.path.exists(libdir):
     sys.path.append(libdir)
 
 import logging
-from waveshare_epd import epd2in9bc
+from waveshare_epd import epd2in9_V2
 import time
 from PIL import Image,ImageDraw,ImageFont
 import traceback
@@ -16,24 +16,29 @@ import traceback
 logging.basicConfig(level=logging.DEBUG)
 
 try:
-    logging.info("epd2in9bc Demo")
-    
-    epd = epd2in9bc.EPD()
+    logging.info("epd2in9 V2 Demo") 
+    epd = epd2in9_V2.EPD()
+
     logging.info("init and Clear")
     epd.init()
-    epd.Clear()
-    time.sleep(1)
+    epd.Clear(0xFF)
+    time.sleep(2)
     
     logging.info("3.read bmp file")
-    HBlackimage = Image.open(os.path.join(picdir, 'blackhole.bmp'))
-    epd.display(epd.getbuffer(HBlackimage))
-
+    Himage = Image.open(os.path.join(picdir, 'blackhole.bmp'))
+    epd.display(epd.getbuffer(Himage))
+    
+    logging.info("4.read bmp file on window,Quick brush demo")
+            
+    logging.info("Clear...")
+    
+    logging.info("Goto Sleep...")
     epd.sleep()
-        
+    
 except IOError as e:
     logging.info(e)
     
 except KeyboardInterrupt:    
     logging.info("ctrl + c:")
-    epd2in9bc.epdconfig.module_exit(cleanup=True)
+    epd2in9_V2.epdconfig.module_exit(cleanup=True)
     exit()
